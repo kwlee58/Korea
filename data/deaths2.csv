@@ -1,0 +1,15 @@
+Province,Number of Live Births,Total Deaths,Died at Home,Died at Hospital,Died Elsewhere,id,Display
+Chagang-do,19044,15,8,5,2,0,Jagang
+Hamgyong-bukto,34703,29,17,10,2,1,North Hamgyong
+Hamgyong-namdo,45998,35,25,8,2,2,South Hamgyong
+Hwanghae-bukto,31156,22,13,7,2,3,North Hwanghae
+Hwanghae-namdo,32631,25,15,8,2,4,South Hwanghae
+Kaesong,32631,25,15,8,2,5,Kaesong (of South Hwanghae)
+Kangwon-do,22728,18,12,4,2,6,Kangwon
+Kumgangsan,22728,18,12,4,2,7,Kumgangsan (of Kangwon)
+P'yongan-bukto,40845,34,22,10,2,8,North Phyongan
+P'yongan-namdo,61439,48,32,14,2,9,South Phyongan
+P'yongyang,46739,32,19,12,1,10,Pyongyang
+Rason,34703,29,17,10,2,11,Rason (of North Hamgyong)
+Ryanggang,10466,9,7,2,0,12,Ryanggang
+Sinuiju,40845,34,22,10,2,13,Sinuiju (of North Phyongan)

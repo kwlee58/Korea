@@ -1,0 +1,15 @@
+id ,Province,long,lat,Display
+0,Chagang-do,126.6,40.8,Jagang
+1,Hamgyong-bukto,129.5,42,North Hamgyong
+2,Hamgyong-namdo,128,40.3,South Hamgyong
+3,Hwanghae-bukto,126.3,38.6,North Hwanghae
+4,Hwanghae-namdo,125.3,38.25,South Hwanghae
+5,Kaesong,126.95,38,
+6,Kangwon-do,127.3,38.7,Kangwon
+7,Kumgangsan,128,38.5,
+8,P'yongan-bukto,125.2,40,North Phyongan
+9,P'yongan-namdo,126.2,39.6,South Phyongan
+10,P'yongyang,125.9,39,Pyongyang
+11,Rason,130.4,42.15,
+12,Ryanggang,128.2,41.1,Ryanggang
+13,Sinuiju,124.2,40.1,

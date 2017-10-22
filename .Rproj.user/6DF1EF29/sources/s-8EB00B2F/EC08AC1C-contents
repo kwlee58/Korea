@@ -1,0 +1,290 @@
+---
+title: "Korea Map WGS84"
+author: "coop711"
+date: '2017 9 20 '
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Map Data
+
+[통계지리정보서비스](http://sgis.kostat.go.kr) 에서 신청하고 다운로드 승인난 shape 파일을 [mapshaper](https://mapshaper.org) 에서 간략히 한 후 작업에 착수한다.
+
+## Simplified Versions (from [mapshaper](https://mapshaper.org))
+
+### 시도
+
+```{r map data}
+library(maptools) #> `readShapePoly()`, `rgdal::readOGR()`로 대체
+library(GISTools) #> `choropleth`
+library(ggmap) #> `geocode()`, `ggmap()`, `qmap()`, `revgeocode()`
+library(ggplot2) #> `ggplot()`
+library(rgdal) #> `CRS`, `ogrInfo()`, `ogrListLayers()`, `readOGR()`, `spTransform()`
+library(dplyr) #> `arrange()`, `filter()`, `group_by()`, `left_join()`, `mutate()`,  
+library(broom) #> `tidy()`
+library(extrafont) #> "HCR Dotum LVT"
+options(width = 132)
+```
+
+#### Simplified Shape files
+
+```{r}
+getwd()
+ogrInfo(dsn = "./KOR_adm",  #> `ogrInfo()`
+        layer = "KOR_adm0")
+shp_S_1 <- readOGR(dsn = "./KOR_adm/", 
+                layer = "KOR_adm1",
+                stringsAsFactors = FALSE)
+#                 encoding = "CP949")
+ogrInfo(dsn = "./PRK_adm",  #> `ogrInfo()`
+        layer = "PRK_adm1")
+shp_N_1 <- readOGR(dsn = "./PRK_adm/", 
+                layer = "PRK_adm1",
+                stringsAsFactors = FALSE)
+#                 encoding = "CP949")
+shp_S_1@data #> data file 이 빈약한 것 확인.
+shp_N_1@data
+data.frame(shp_S_1)
+data.frame(shp_N_1)
+class(shp_S_1)
+class(shp_N_1)
+summary(shp_S_1)
+summary(shp_N_1)#> 요약
+coordinates(shp_S_1)
+coordinates(shp_N_1)
+Names_S <- shp_S_1$NL_NAME_1
+Names_N <- shp_N_1$NL_NAME_1
+Lon_S <- coordinates(shp_S_1)[, 1]
+Lat_S <- coordinates(shp_S_1)[, 2]
+Lon_N <- coordinates(shp_N_1)[, 1]
+Lat_N <- coordinates(shp_N_1)[, 2]
+```
+
+#### Simple Plots
+
+```{r, fig.width = 12, fig.height = 12}
+library(extrafont)
+par(family = "HCT Dotum LVT")
+par(mar = c(0, 0, 0, 0))
+plot(shp_S_1, ylim = c(32, 44))
+plot(shp_N_1, add = TRUE)
+p_S <- pointLabel(Lon_S, Lat_S, Names_S, offset = 0, cex = 0.5, family = "HCR Dotum LVT")
+p_N <- pointLabel(Lon_N, Lat_N, Names_N, offset = 0, cex = 0.5, family = "HCR Dotum LVT")
+AREA.shades <- auto.shading(shp1$SHAPE_AREA, cols = brewer.pal(5, "Greens"))
+choropleth(shp1, shp1$SHAPE_AREA, shading = AREA.shades)
+choro.legend(1110000, 1600000, AREA.shades)
+```
+
+#### Data Frame
+
+```{r}
+proj4string(shp1) #> .shp 파일을 mapshaper.org 에서 간략히 하면 .prj 는 생성되지 않음. 
+                      #> 원시 layer에 제공되어 있는 .prj 파일을 옮겨와야 함.
+coordinates(shp1) #> 좌표 확인. 변환 필요한 좌표계.
+shp1_84 <- shp1 %>% 
+  spTransform(CRS("+init=epsg:4326")) #> 통상의 WGS84 좌표계로 변환
+coordinates(shp1_84) #> 통상의 좌표계로 변환된 것을 확인함.
+# names(shp_simp84@data) <- c("id", "base_year", "code", "name_kor", "length", "area", "AB_name") #> 변수명 바꿈.
+str(shp1_84@data) #> 변수명 등 확인.
+# shp_simp84$id <- as.character(shp_simp84$id)
+# geocode(shp_simp$name_eng) 
+# map_simp <- tidy(shp_simp84) #> `tidy` 데이터로 변환
+# str(map_simp) #> 데이터 구조 확인
+shp1_84$id <- rownames(shp1_84@data) #> `id` 변수 생성. `left_join()`에 반드시 필요함. `tidy()`의 결과로 나오는 데이터 프레임에는 `@data`의 `code`, `region`의 정보가 누락됨.
+shp1_84@data #> 데이터 슬롯 확인
+map1_coords <- coordinates(shp1_84) #> `geom_text()`에 필요한 좌표 복사
+colnames(map1_coords) <- c("long", "lat") #> 좌표계 이름 명칭.
+map1_coords # 좌표 확인
+map1_data <- cbind(map1_coords, shp1_84@data) # shp_simp84@data 에 좌표 추가
+shp1_84$SIDO_NM
+shp1_84$SIDO_NM2
+shp1_84$SIDO_NM_f <- factor(shp1_84$SIDO_NM,
+                                levels = shp1_84$SIDO_NM, 
+                                labels = shp1_84$SIDO_NM2)
+shp1_84$region <- shp1_84$SIDO_CD
+shp1_84_df <- tidy(shp1_84)
+str(shp1_84_df)
+str(shp1_84@data)
+map1_df <- left_join(shp1_84_df, 
+                     shp1_84@data, 
+                     by = c("id" = "id"))
+str(map1_df)
+Dokdo_coord <- geocode("Dokdo")
+Ulleung_coord <- geocode("Ulleungdo")
+```
+
+### 시군구
+
+#### Simplified Shape files
+
+```{r}
+ogrInfo(dsn = "../data/BND_SIGUNGU_PG",  #> `ogrInfo()`
+        layer = "BND_SIGUNGU_PG")
+shp2 <- readOGR(dsn = "../data/BND_SIGUNGU_PG", 
+                layer = "BND_SIGUNGU_PG",
+                stringsAsFactors = FALSE)
+#                 encoding = "CP949")
+shp2@data #> data file에서 면적과 둘레 확인.
+# data.frame(shp2)
+class(shp2)
+summary(shp2) #> 요약
+shp2@data[order(shp2$SIGUNGU_CD), ]
+shp2@data <- shp2@data[order(shp2$SIGUNGU_CD), ]
+shp2@data
+```
+
+#### Simple Plots
+
+```{r, fig.width =7, fig.height = 7}
+plot(shp2)
+AREA2.shades <- auto.shading(shp2$SHAPE_AREA, cols = brewer.pal(5, "Blues"))
+choropleth(shp2, shp2$SHAPE_AREA, shading = AREA2.shades)
+choro.legend(1110000, 1600000, AREA2.shades)
+```
+
+#### Data Frame
+
+```{r}
+proj4string(shp2) #> .shp 파일을 mapshaper.org 에서 간략히 하면 .prj 는 생성되지 않음. 
+                      #> 원시 layer에 제공되어 있는 .prj 파일을 옮겨와야 함.
+coordinates(shp2) #> 좌표 확인. 변환 필요한 좌표계.
+shp2_84 <- shp2 %>% 
+  spTransform(CRS("+init=epsg:4326")) #> 통상의 WGS84 좌표계로 변환
+coordinates(shp2_84) #> 통상의 좌표계로 변환된 것을 확인함.
+# names(shp_simp84@data) <- c("id", "base_year", "code", "name_kor", "length", "area", "AB_name") #> 변수명 바꿈.
+str(shp2_84@data) #> 변수명 등 확인.
+# shp_simp84$id <- as.character(shp_simp84$id)
+# geocode(shp_simp$name_eng) 
+# map_simp <- tidy(shp_simp84) #> `tidy` 데이터로 변환
+# str(map_simp) #> 데이터 구조 확인
+shp2_84$id <- rownames(shp2_84@data) #> `id` 변수 생성. `left_join()`에 반드시 필요함. `tidy()`의 결과로 나오는 데이터 프레임에는 `@data`의 `code`, `region`의 정보가 누락됨.
+shp2_84$region <- shp2_84$SIGUNGU_CD
+shp2_84@data #> 데이터 슬롯 확인
+map2_coords <- coordinates(shp2_84) #> `geom_text()`에 필요한 좌표 복사
+colnames(map2_coords) <- c("long", "lat") #> 좌표계 이름 명칭.
+map2_coords # 좌표 확인
+map2_data <- cbind(map2_coords, shp2_84@data) # shp_simp84@data 에 좌표 추가
+map2_data
+shp2_84_df <- tidy(shp2_84)
+str(shp2_84_df)
+str(shp2_84@data)
+map2_df <- left_join(shp2_84_df, shp2_84@data, by = c("id" = "id"))
+str(map2_df)
+```
+
+### 시군구 면적 삽입
+
+```{r, eval = TRUE}
+library(tmap)
+qtm(shp2_84, 
+    fill = "SHAPE_AREA", 
+    fill.title = "면적") +
+  tm_layout(fontfamily = "HCR Dotum LVT")
+```
+
+```{r}
+qtm(shp2_84, 
+    fill = "SHAPE_LENG", 
+    fill.title = "둘레") +
+  tm_layout(fontfamily = "HCR Dotum LVT")
+```
+
+```{r, fig.width = 12, fig.height = 12, eval = TRUE}
+g0 <- ggplot(data = map2_df,  
+       mapping = aes(x = long,
+                     y = lat,
+                     group = group)) +
+  geom_polygon(fill = "white",
+               colour = "black") +
+  coord_map() 
+g1 <- g0 + geom_text(data = map2_data, 
+            mapping = aes(x = long, 
+                          y = lat,
+                          label = SIGUNGU_NM),
+            inherit.aes = FALSE,
+            family = "HCR Dotum LVT",
+            size = 4,
+            colour = "blue") 
+g2 <- g1 + theme(axis.title.x = element_text(family = "HCR Dotum LVT"),
+        axis.title.y = element_text(family = "HCR Dotum LVT"),
+        text = element_text(family = "HCR Dotum LVT")) 
+g3 <- g2 + labs(x = "경도", 
+       y = "위도") 
+g4 <- g3 + annotate("text", 
+           x = Dokdo_coord$lon, 
+           y = Dokdo_coord$lat, 
+           label = "독도",
+           family = "HCR Dotum LVT",
+           colour = "red")
+g4 + annotate("text", 
+           x = Ulleung_coord$lon, 
+           y = Ulleung_coord$lat + 0.2, 
+           label = "울릉도",
+           family = "HCR Dotum LVT",
+           colour = "black")
+```
+
+```{r, fig.width = 12, fig.height = 12, eval = TRUE}
+#> data frame으로 변환하여 그리는 전형적인 과정
+ggplot(data = shp2_84_df,  
+       mapping = aes(x = long,
+                     y = lat,
+                     group = group)) +
+  geom_polygon(fill = "white",
+               colour = "black") +
+  coord_map() +
+  geom_text(data = map2_data, 
+            mapping = aes(x = long, 
+                          y = lat,
+                          label = SIGUNGU_NM),
+            inherit.aes = FALSE,
+            family = "HCR Dotum LVT",
+            size = 4,
+            colour = "blue") +
+  theme(axis.title.x = element_text(family = "HCR Dotum LVT"),
+        axis.title.y = element_text(family = "HCR Dotum LVT"),
+        text = element_text(family = "HCR Dotum LVT")) +
+  labs(x = "경도", 
+       y = "위도") +
+  annotate("text", 
+           x = Dokdo_coord$lon, 
+           y = Dokdo_coord$lat, 
+           label = "독도",
+           family = "HCR Dotum LVT",
+           colour = "red") +
+  annotate("text", 
+           x = Ulleung_coord$lon, 
+           y = Ulleung_coord$lat + 0.2, 
+           label = "울릉도",
+           family = "HCR Dotum LVT",
+           colour = "black")
+```
+
+### 색으로 구분
+
+```{r, fig.width = 12, fig.height = 12, eval = TRUE}
+library(RColorBrewer)
+ggplot(data = map2_df, 
+       mapping = aes(x = long,
+                     y = lat,
+                     group = group,
+                     fill = SHAPE_AREA)) +
+  geom_polygon() +
+#  geom_polygon(fill = "white",
+#               colour = "black") +
+  coord_map() +
+  theme(legend.text = element_text(family = "HCR Dotum LVT"),
+        legend.title = element_text(family = "HCR Dotum LVT")) +
+  guides(fill = guide_legend(title = "면적")) +
+#   scale_fill_brewer()
+  scale_fill_distiller()
+```
+
+## Save
+
+```{r}
+save.image("./korea_map.RData")
+```
