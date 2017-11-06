@@ -1,7 +1,7 @@
 ---
-title: "Korea Map from GADM.org"
+title: "King Sejong National Referendum on the Map"
 author: "coop711"
-date: '2017 9 20 '
+date: '2017-10-23'
 output: html_document
 ---
 
@@ -14,9 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 [Global Administrative Areas](http://www.gadm.org/country) 에서 다운로드한  zip 파일을 풀고 shape 파일을 [mapshaper](https://mapshaper.org) 에서 간략히 한 후 작업에 착수한다.
 `.shp` 형태로만 불러들일 수 있기 때문에 `@data`는 원본에서 복사하여야 한다.
 
-## Simplified Versions (from [mapshaper](https://mapshaper.org))
-
-### 시도
+### Libraries
 
 ```{r message = FALSE, warning = FALSE, results = 'hide'}
 library(sf)
@@ -32,28 +30,38 @@ library(extrafont) #> "HCR Dotum LVT"
 options(width = 132)
 ```
 
-#### Simplified Shape files
+## Simplified Versions 
+
+from [mapshaper](https://mapshaper.org)
+
+### Simplified Shape files
 
 ```{r, results = 'hide'}
-shp_S <- readOGR(dsn = "../data/KOR_adm/", 
+shp_S <- readOGR(dsn = "../data/KOR_adm", 
                 layer = "KOR_adm1",
                 stringsAsFactors = FALSE)
-shp_N <- readOGR(dsn = "../data/PRK_adm/", 
+shp_N <- readOGR(dsn = "../data/PRK_adm", 
                 layer = "PRK_adm1",
                 stringsAsFactors = FALSE)
 ogrInfo(dsn = "../data/KOR_adm1",  #> `ogrInfo()`
         layer = "KOR_adm1")
-shp_S_1 <- readOGR(dsn = "../data/KOR_adm1/", 
+shp_S_1 <- readOGR(dsn = "../data/KOR_adm1", 
                 layer = "KOR_adm1",
                 stringsAsFactors = FALSE)
 #                 encoding = "CP949")
 ogrInfo(dsn = "../data/PRK_adm1",  #> `ogrInfo()`
         layer = "PRK_adm1")
-shp_N_1 <- readOGR(dsn = "../data/PRK_adm/", 
+shp_N_1 <- readOGR(dsn = "../data/PRK_adm", 
                 layer = "PRK_adm1",
                 stringsAsFactors = FALSE)
 #                 encoding = "CP949")
+```
 
+### Data
+
+#### Shape Files
+
+```{r, results = 'hide'}
 shp_S_1@data <- shp_S@data
 shp_N_1@data <- shp_N@data
 data.frame(shp_S_1)
@@ -64,21 +72,67 @@ summary(shp_S_1)
 summary(shp_N_1)
 coordinates(shp_S_1)
 coordinates(shp_N_1)
+glimpse(shp_S_1)
+glimpse(shp_N_1)
+```
+
+#### Names
+
+```{r, results = 'hide'}
 Names_S <- shp_S_1$NL_NAME_1
 Names_N <- shp_N_1$NL_NAME_1
 shp_S_1$Names_kr <- c("부산", "충북", "충남", "대구", "대전", "강원", "광주", "경기", "경북",
                       "경남", "인천", "제주", "전북", "전남", "세종", "서울", "울산")
 shp_N_1$Names_kr <- c("자강", "함북", "함남", "황북", "황남", "개성", "강원", "금강", "평북",
                       "평남", "평양", "라선", "량강", "신의")
-shp_S_1$Names_kr_old <- c("경상", "충청", "충청", "경상", "충청", "강원", "전라", "경기",
-                          "경상", "경상", "경기", "전라", "전라", "전라", "충청", "서울",
-                          "경상")
-shp_N_1$Names_kr_old <- c("평안", "함길", "함길", "황해", "황해", "유후", "강원", "강원",
-                          "평안", "평안", "평안", "함길", "함길", "평안")
-shp_S_1$rates <- c(98.9, 33.3, 33.3, 98.9, 33.3, 12.0, 99.1, 98.6, 98.9, 98.9, 98.6, 
-                   99.1, 99.1, 99.1, 33.3, 50.7, 98.9)
-shp_N_1$rates <- c(4.5, 1.0, 1.0, 22.3, 22.3, 94.1, 12.0, 12.0, 4.5, 
-                   4.5, 4.5, 1.0, 1.0, 4.5)
+shp_S_1$Names_kr_old <- 
+  ifelse(shp_S_1$Names_kr %in% c("부산","대구", "경북", "경남", "울산"),
+         "경상", ifelse(shp_S_1$Names_kr %in% c("광주", "제주", "전북", "전남"),
+                      "전라", ifelse(shp_S_1$Names_kr %in% c("충북", "충남", "대전", "세종"),
+                                   "충청", ifelse(shp_S_1$Names_kr %in% c("경기", "인천"),
+                                                "경기", ifelse(shp_S_1$Names_kr == "서울",
+                                                             "서울", "강원")))))
+shp_N_1$Names_kr_old <- 
+  ifelse(shp_N_1$Names_kr %in% c("자강","평북", "평남", "평양", "신의"),
+         "평안", ifelse(shp_N_1$Names_kr %in% c("함북", "함남", "라선", "량강"),
+                      "함길", ifelse(shp_N_1$Names_kr %in% c("황북", "황남"),
+                                   "황해", ifelse(shp_N_1$Names_kr %in% c("강원", "금강"),
+                                                "강원", "유후"))))
+shp_N_1$Names_kr_old
+# shp_S_1$Names_kr_old <- c("경상", "충청", "충청", "경상", "충청", "강원", "전라", "경기",
+#                           "경상", "경상", "경기", "전라", "전라", "전라", "충청", "서울",
+#                           "경상")
+# shp_N_1$Names_kr_old <- c("평안", "함길", "함길", "황해", "황해", "유후", "강원", "강원",
+#                           "평안", "평안", "평안", "함길", "함길", "평안")
+```
+
+#### 찬성율
+
+```{r, results = 'hide'}
+rates <- c(50.7, 94.1, 98.6, 4.5, 22.3, 33.3, 12.0, 1.0, 98.9, 99.1)
+names(rates) <- c("서울", "유후", "경기", "평안", "황해", "충청", "강원", "함길", "경상", "전라")
+rates
+rates_b <- c(50.7, 85.3, 14.3, 50.0, 55.6, 33.3, 16.7, 77.5, 75.0) 
+names(rates_b) <- c("서울", "경기", "평안", "황해", "충청", "강원", "함길", "경상", "전라")
+rates_b
+rates_c <- c(94.1, 98.6, 4.4, 22.2, 33.3, 12.0, 1.0, 99.0, 99.1)
+names(rates_c) <- c("유후", "경기", "평안", "황해", "충청", "강원", "함길", "경상", "전라")
+rates_c
+rates_SL <- c(9.8, 39.7, 79.1)
+names(rates_SL) <- c("대신", "현직", "전직")
+N_SL <- c(215, 652, 560)
+match(shp_S_1$Names_kr_old, names(rates_b))
+shp_S_1$rates <- rates[match(shp_S_1$Names_kr_old, names(rates))]
+shp_N_1$rates <- rates[match(shp_N_1$Names_kr_old, names(rates))]
+shp_S_1$rates_b <- rates_b[match(shp_S_1$Names_kr_old, names(rates_b))]
+shp_N_1$rates_b <- rates_b[match(shp_N_1$Names_kr_old, names(rates_b))]
+shp_S_1$rates_c <- rates_c[match(shp_S_1$Names_kr_old, names(rates_c))]
+shp_N_1$rates_c <- rates_c[match(shp_N_1$Names_kr_old, names(rates_c))]  
+```
+
+#### Coordinates
+
+```{r, results = 'hide'}
 index_S <- shp_S_1$Names_kr %in% c("경북", "대전", "강원", "전북", "경기", "서울")
 index_N <- shp_N_1$Names_kr %in% c("개성", "황북", "평남", "함남")
 Lon_S <- coordinates(shp_S_1)[, 1]
@@ -90,15 +144,35 @@ Lon_N <- coordinates(shp_N_1)[, 1]
 Lat_N <- coordinates(shp_N_1)[, 2]
 Lon_N_1 <- Lon_N[index_N]
 Lat_N_1 <- Lat_N[index_N]
+```
+
+#### Labels
+
+```{r, results = 'hide'}
+labels_S_b <- paste(shp_S_1$Names_kr_old[index_S], 
+                  paste0(shp_S_1$rates_b[index_S], "%"), sep = ":")
+labels_N_b <- paste(shp_N_1$Names_kr_old[index_N], 
+                  paste0(shp_N_1$rates_b[index_N], "%"), sep = ":")
+labels_S_c <- paste(shp_S_1$Names_kr_old[index_S], 
+                  paste0(shp_S_1$rates_c[index_S], "%"), sep = ":")
+labels_N_c <- paste(shp_N_1$Names_kr_old[index_N], 
+                  paste0(shp_N_1$rates_c[index_N], "%"), sep = ":")
 labels_S <- paste(shp_S_1$Names_kr_old[index_S], 
-                  paste(shp_S_1$rates[index_S], "%", sep = ""), sep = ":")
+                  paste0(shp_S_1$rates[index_S], "%"), sep = ":")
 labels_N <- paste(shp_N_1$Names_kr_old[index_N], 
-                  paste(shp_N_1$rates[index_N], "%", sep = ""), sep = ":")
+                  paste0(shp_N_1$rates[index_N], "%"), sep = ":")
+```
+
+#### Colours
+
+```{r, results = 'hide'}
 col_S <- c("black", "black", "white", "white", "white", "white")
 col_N <- c("black", "black", "white", "black")
 ```
 
-#### Simple Plots
+<P style = "page-break-before:always">
+
+### Simple Plots
 
 ```{r, fig.width = 12, fig.height = 12}
 library(extrafont)
@@ -108,6 +182,10 @@ plot(shp_N_1, add = TRUE)
 p_S <- pointLabel(Lon_S, Lat_S, Names_S, offset = 0, cex = 0.5, family = "HCR Dotum LVT")
 p_N <- pointLabel(Lon_N, Lat_N, Names_N, offset = 0, cex = 0.5, family = "HCR Dotum LVT")
 ```
+
+<P style = "page-break-before:always">
+
+#### 관료와 품관 촌민
 
 ```{r, fig.width = 12, fig.height = 12}
 # png("./pics/Sejong_map.png")
@@ -121,16 +199,35 @@ shades <- shading(breaks = seq(0, 100, by = 0.1),
 # rates_N_shades <- auto.shading(shp_N_1$rates, cols = rev(brewer.pal(5, "Greens")))
 # choropleth(shp_S_1, shp_S_1$rates, shading = rates_S_shades, ylim = c(32, 44))
 # choropleth(shp_N_1, shp_N_1$rates, shading = rates_N_shades, add = TRUE)
-par(mar = c(0, 0, 0, 0), family = "HCR Dotum LVT")
+par(mar = c(0, 0, 3.1, 0), mfrow = c(1, 2), oma = c(0, 0, 2, 0), family = "HCR Dotum LVT")
+choropleth(shp_S_1, shp_S_1$rates_b, shading = shades, ylim = c(32, 44))
+choropleth(shp_N_1, shp_N_1$rates_b, shading = shades, add = TRUE)
+text(Lon_S_1, Lat_S_1, labels = labels_S_b, col = "black", cex = 0.8)
+text(Lon_N_1, Lat_N_1, labels = labels_N_b, col = "black", cex = 0.8)
+title(main = "관료", cex.main = 2, line = -2)
+choropleth(shp_S_1, shp_S_1$rates_c, shading = shades, ylim = c(32, 44))
+choropleth(shp_N_1, shp_N_1$rates_c, shading = shades, add = TRUE)
+text(Lon_S_1, Lat_S_1, labels = labels_S_c, col = col_S, cex = 0.8)
+text(Lon_N_1, Lat_N_1, labels = labels_N_c, col = col_N, cex = 0.8)
+title(main = "품관 촌민", cex.main = 2, line = -2)
+title(main = "세종대왕의 세법개혁 국민투표 지지율", outer = TRUE, cex.main = 2.5)
+```
+
+#### 전체
+
+```{r, fig.width = 12, fig.height = 12}
+par(mar = c(0, 0, 3.1, 0), family = "HCR Dotum LVT")
 choropleth(shp_S_1, shp_S_1$rates, shading = shades, ylim = c(32, 44))
 choropleth(shp_N_1, shp_N_1$rates, shading = shades, add = TRUE)
 text(Lon_S_1, Lat_S_1, labels = labels_S, col = col_S, cex = 0.8)
 text(Lon_N_1, Lat_N_1, labels = labels_N, col = col_N, cex = 0.8)
+title(main = "국민투표 찬성 비율(전체)", cex.main = 2, line = -2)
 # choro.legend(1110000, 1600000, AREA.shades)
 # dev.off()
 # dev.copy(png, file = "../pics/Sejong_ref_map.png", width = 960, height = 960)
 # dev.off()
 ```
+
 ## ggplot
 
 ```{r, fig.width = 12, fig.height = 12}
@@ -145,64 +242,139 @@ g0 +
   coord_quickmap()
 ```
 
+<P style = "page-break-before:always">
+
 ## Piece by piece into Unification
 
-```{r, union}
+### 서울
+
+```{r}
 index_SL <- shp_S_1$Names_kr_old == "서울"
 shp_SL <- shp_S_1[index_SL, ]
 plot(shp_SL)
+```
+
+### 유후사
+
+```{r}
 index_YH <- shp_N_1$Names_kr_old == "유후"
 shp_YH <- shp_N_1[index_YH, ]
 plot(shp_YH)
+```
+
+### 경상도
+
+```{r}
 index_GS <- shp_S_1$Names_kr_old == "경상"
 index_GS
 shp_GS <- shp_S_1[index_GS, ]
 shp_GS_u <- gUnaryUnion(shp_GS)
 plot(shp_GS_u)
+```
+
+### 전라도
+
+```{r}
 index_JL <- shp_S_1$Names_kr_old == "전라"
 index_JL
 shp_JL <- shp_S_1[index_JL, ]
 shp_JL_u <- gUnaryUnion(shp_JL)
 plot(shp_JL_u)
+```
+
+### 충청도
+
+```{r}
 index_CC <- shp_S_1$Names_kr_old == "충청"
 index_CC
 shp_CC <- shp_S_1[index_CC, ]
 shp_CC_u <- gUnaryUnion(shp_CC)
 plot(shp_CC_u)
+```
+
+### 경기도
+
+```{r}
 index_GG <- shp_S_1$Names_kr_old == "경기"
 index_GG
 shp_GG <- shp_S_1[index_GG, ]
 #> Using a zero-width buffer cleans up many toplogical problems in R 
 shp_GG <- gBuffer(shp_GG, byid = TRUE, width = 0)
 plot(shp_GG)
+```
+
+```{r}
 shp_GG_u <- gUnaryUnion(shp_GG)
 plot(shp_GG_u)
+```
+
+### 평안도
+
+```{r}
 index_PA <- shp_N_1$Names_kr_old == "평안"
 index_PA
 shp_PA <- shp_N_1[index_PA, ]
 shp_PA_u <- gUnaryUnion(shp_PA)
 plot(shp_PA_u)
+```
+
+### 북강원
+
+```{r}
 index_GW <- shp_N_1$Names_kr_old == "강원"
 index_GW
 shp_GW <- shp_N_1[index_GW, ]
 shp_GW_u <- gUnaryUnion(shp_GW)
 plot(shp_GW_u)
+```
+
+### 황해도
+
+```{r}
 index_HH <- shp_N_1$Names_kr_old == "황해"
 index_HH
 shp_HH <- shp_N_1[index_HH, ]
 shp_HH_u <- gUnaryUnion(shp_HH)
 plot(shp_HH_u)
+```
+
+### 함길도
+
+```{r}
 index_HG <- shp_N_1$Names_kr_old == "함길"
 index_HG
 shp_HG <- shp_N_1[index_HG, ]
 shp_HG_u <- gUnaryUnion(shp_HG)
 plot(shp_HG_u)
+```
+
+### 남강원
+
+```{r}
 shp_GW_S <- shp_S_1[shp_S_1$Names_kr_old == "강원", ]
-plot(shp_GW_u)
+plot(shp_GW_S)
+```
+
+### 강원도
+
+```{r}
+bbox(shp_GW_u)
+bbox(shp_GW_S)
+xlim_u <- c(min(bbox(shp_GW_u)[1, 1], bbox(shp_GW_S)[1, 1]), 
+            max(bbox(shp_GW_u)[1, 2], bbox(shp_GW_S)[1, 2]))
+ylim_u <- c(min(bbox(shp_GW_u)[2, 1], bbox(shp_GW_S)[2, 1]), 
+            max(bbox(shp_GW_u)[2, 2], bbox(shp_GW_S)[2, 2]))
+plot(shp_GW_u, xlim = xlim_u, ylim = ylim_u)
 plot(shp_GW_S, add = TRUE)
+```
+
+```{r}
 shp_GW_I <- gIntersection(shp_GW_u, shp_GW_S)
 class(shp_GW_I)
 plot(shp_GW_I)
+```
+
+```{r}
 # shp_GW_u_sf <- st_as_sfc(shp_GW_u)
 # class(shp_GW_u_sf)
 # plot(shp_GW_u_sf)
@@ -231,6 +403,8 @@ class(shp_GW_u)
 class(shp_CC)
 ```
 
+<P style = "page-break-before:always">
+
 ## Old Map
 
 ```{r, fig.width = 12, fig.height = 12}
@@ -249,19 +423,99 @@ plot(shp_YH, add = TRUE)
 
 #### Colours
 
-```{r}
-cols <- unique(c(shp_S_1$rates, shp_N_1$rates)) * 10
-pie(rep(1, 10), col = colorRampPalette(brewer.pal(11, "RdYlBu"))(1001)[cols])
-names(cols) <- c("GS", "CC", "GW", "JL", "GG", "SL", "PA", "HG", "HH", "YH")
+```{r, fig.width = 12, fig.height = 12}
+par(mar = c(0, 0, 0, 0), mfrow  = c(2, 2), family = "HCR Dotum LVT")
+cols_b <- rates_b * 10
+cols_b
+cols_c <- rates_c * 10
+cols_c
+cols <- rates * 10
+cols
+cols_SL <- rates_SL * 10
+cols_SL
+# c(shp_S_1$rates, shp_N_1$rates)
+# unique(c(shp_S_1$rates, shp_N_1$rates))
+# cols
+names(cols_b) <- c("SL", "GG", "PA", "HH", "CC", "GW", "HG", "GS", "JL")
+names(cols_c) <- c("YH", "GG", "PA", "HH", "CC", "GW", "HG", "GS", "JL")
+names(cols) <- c("SL", "YH", "GG", "PA", "HH", "CC", "GW", "HG", "GS", "JL")
+pie(rep(1, 9), 
+    col = colorRampPalette(brewer.pal(11, "RdYlBu"))(1001)[cols_b],
+    labels = names(cols_b))
+pie(rep(1, 9), 
+    col = colorRampPalette(brewer.pal(11, "RdYlBu"))(1001)[cols_c],
+    labels = names(cols_c))
+pie(rep(1, 10), 
+    col = colorRampPalette(brewer.pal(11, "RdYlBu"))(1001)[cols],
+    labels = names(cols))
+pie(rep(1, 3), 
+    col = colorRampPalette(brewer.pal(11, "RdYlBu"))(1001)[cols_SL],
+    labels = names(cols_SL))
+cols_hex_b <- colorRampPalette(brewer.pal(11, "RdYlBu"))(1001)[cols_b]
+cols_hex_c <- colorRampPalette(brewer.pal(11, "RdYlBu"))(1001)[cols_c]
 cols_hex <- colorRampPalette(brewer.pal(11, "RdYlBu"))(1001)[cols]
+cols_hex_SL <- colorRampPalette(brewer.pal(11, "RdYlBu"))(1001)[cols_SL]
+names(cols_hex_b) <- names(cols_b)
+names(cols_hex_c) <- names(cols_c)
 names(cols_hex) <- names(cols)
+cols_hex_b
+cols_hex_c
 cols_hex
+cols_hex_SL
 ```
 
 ### Combined
 
+#### 서울
+
+```{r, fig.width = 12, fig.height = 4}
+par(mar = c(0, 0, 3.1, 0), mfrow = c(1, 3), oma = c(0, 0, 2, 0), family = "HCR Dotum LVT")
+plot(shp_SL, col = cols_hex_SL[1], main = "대신", cex.main = 2.5)
+text(coordinates(shp_SL), labels = paste0("찬성 : ", rates_SL[1], "%"), cex = 2)
+plot(shp_SL, col = cols_hex_SL[2], main = "3품이하 현직", cex.main = 2.5)
+text(coordinates(shp_SL), labels = paste0("찬성 : ", rates_SL[2], "%"), cex = 2)
+plot(shp_SL, col = cols_hex_SL[3], main = "3품이하 전직", cex.main = 2.5)
+text(coordinates(shp_SL), labels = paste0("찬성 : ", rates_SL[3], "%"), cex = 2)
+title(main = "서울의 세법개혁 찬반(관료)", outer = TRUE, cex.main = 2.5)
+par(mfrow = c(1, 1))
+```
+
+#### 관료와 품관 촌민
+
 ```{r, fig.width = 12, fig.height = 12}
-par(mar = c(0, 0, 0, 0))
+par(mar = c(0, 0, 3.1, 0), mfrow = c(1, 2), family = "HCR Dotum LVT")
+plot(shp_HG_u, xlim = c(123, 132), ylim = c(32, 44), col = cols_hex_b["HG"])
+plot(shp_PA_u, add = TRUE, col = cols_hex_b["PA"])
+plot(shp_HH_u, add = TRUE, col = cols_hex_b["HH"])
+plot(shp_GW, add = TRUE, col = cols_hex_b["GW"])
+plot(shp_GG_u, add = TRUE, col = cols_hex_b["GG"])
+plot(shp_CC_u, add = TRUE, col = cols_hex_b["CC"])
+plot(shp_JL_u, add = TRUE, col = cols_hex_b["JL"])
+plot(shp_GS_u, add = TRUE, col = cols_hex_b["GS"])
+plot(shp_SL, add = TRUE, col = cols_hex_b["SL"])
+plot(shp_YH, add = TRUE, col = cols_hex_b["YH"])
+text(Lon_S_1, Lat_S_1, labels = labels_S_b, col = "black", cex = 0.8)
+text(Lon_N_1, Lat_N_1, labels = labels_N_b, col = "black", cex = 0.8)
+title(main = "관료", cex.main = 2.5, line = -4)
+plot(shp_HG_u, xlim = c(123, 132), ylim = c(32, 44), col = cols_hex_c["HG"])
+plot(shp_PA_u, add = TRUE, col = cols_hex_c["PA"])
+plot(shp_HH_u, add = TRUE, col = cols_hex_c["HH"])
+plot(shp_GW, add = TRUE, col = cols_hex_c["GW"])
+plot(shp_GG_u, add = TRUE, col = cols_hex_c["GG"])
+plot(shp_CC_u, add = TRUE, col = cols_hex_c["CC"])
+plot(shp_JL_u, add = TRUE, col = cols_hex_c["JL"])
+plot(shp_GS_u, add = TRUE, col = cols_hex_c["GS"])
+plot(shp_SL, add = TRUE, col = cols_hex_c["SL"])
+plot(shp_YH, add = TRUE, col = cols_hex_c["YH"])
+text(Lon_S_1, Lat_S_1, labels = labels_S_c, col = col_S, cex = 0.8)
+text(Lon_N_1, Lat_N_1, labels = labels_N_c, col = col_N, cex = 0.8)
+title(main = "품관 촌민", cex.main = 2.5, line = -4)
+```
+
+#### 전체
+
+```{r, fig.width = 12, fig.height = 12}
+par(mar = c(3.1, 0, 3.1, 0), family = "HCR Dotum LVT")
 plot(shp_HG_u, xlim = c(123, 132), ylim = c(32, 44), col = cols_hex["HG"])
 plot(shp_PA_u, add = TRUE, col = cols_hex["PA"])
 plot(shp_HH_u, add = TRUE, col = cols_hex["HH"])
@@ -272,4 +526,7 @@ plot(shp_JL_u, add = TRUE, col = cols_hex["JL"])
 plot(shp_GS_u, add = TRUE, col = cols_hex["GS"])
 plot(shp_SL, add = TRUE, col = cols_hex["SL"])
 plot(shp_YH, add = TRUE, col = cols_hex["YH"])
+text(Lon_S_1, Lat_S_1, labels = labels_S, col = col_S, cex = 0.8)
+text(Lon_N_1, Lat_N_1, labels = labels_N, col = col_N, cex = 0.8)
+title(main = "전체", cex.main = 2.5, line = -4)
 ```

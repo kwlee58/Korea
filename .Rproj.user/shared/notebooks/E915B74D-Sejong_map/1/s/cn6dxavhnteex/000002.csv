@@ -1,3 +1,0 @@
-"0","library(extrafont)"
-"0","par(mar = c(0, 0, 0, 0))"
-"0","plot(shp_S_1, ylim = c(32, 44))"

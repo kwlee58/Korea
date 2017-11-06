@@ -1,7 +1,0 @@
-"0","add_trace(choro_S, type = ""choropleth""[, 
-                                       z = ~ rates..%., 
-"
-"2","Error: unexpected input in:
-""add_trace(choro_S, type = ""choropleth""[, 
-                                       z = ~ rates..%., ""
-"
