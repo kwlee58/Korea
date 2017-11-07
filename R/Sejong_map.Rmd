@@ -26,7 +26,7 @@ library(ggplot2) #> `ggplot()`
 library(rgdal) #> `CRS`, `ogrInfo()`, `ogrListLayers()`, `readOGR()`, `spTransform()`
 library(dplyr) #> `arrange()`, `filter()`, `group_by()`, `left_join()`, `mutate()`,  
 library(broom) #> `tidy()`
-library(extrafont) #> "HCR Dotum LVT"
+library(extrafont) #> "Malgun Gothic"
 options(width = 132)
 ```
 
@@ -39,21 +39,29 @@ from [mapshaper](https://mapshaper.org)
 ```{r, results = 'hide'}
 shp_S <- readOGR(dsn = "../data/KOR_adm", 
                 layer = "KOR_adm1",
-                stringsAsFactors = FALSE)
+                stringsAsFactors = FALSE,
+                encoding = "UTF-8",
+                use_iconv = TRUE)
 shp_N <- readOGR(dsn = "../data/PRK_adm", 
                 layer = "PRK_adm1",
-                stringsAsFactors = FALSE)
+                stringsAsFactors = FALSE,
+                encoding = "UTF-8",
+                use_iconv = TRUE)
 ogrInfo(dsn = "../data/KOR_adm1",  #> `ogrInfo()`
         layer = "KOR_adm1")
 shp_S_1 <- readOGR(dsn = "../data/KOR_adm1", 
                 layer = "KOR_adm1",
-                stringsAsFactors = FALSE)
+                stringsAsFactors = FALSE,
+                encoding = "UTF-8",
+                use_iconv = TRUE)
 #                 encoding = "CP949")
 ogrInfo(dsn = "../data/PRK_adm1",  #> `ogrInfo()`
         layer = "PRK_adm1")
 shp_N_1 <- readOGR(dsn = "../data/PRK_adm", 
                 layer = "PRK_adm1",
-                stringsAsFactors = FALSE)
+                stringsAsFactors = FALSE,
+                encoding = "UTF-8",
+                use_iconv = TRUE)
 #                 encoding = "CP949")
 ```
 
@@ -66,6 +74,9 @@ shp_S_1@data <- shp_S@data
 shp_N_1@data <- shp_N@data
 data.frame(shp_S_1)
 data.frame(shp_N_1)
+shp_N_1$NL_NAME_1
+shp_N_1$NL_NAME_1 <- gsub("^\\t", "", shp_N_1$NL_NAME_1)
+shp_N_1$NL_NAME_1
 class(shp_S_1)
 class(shp_N_1)
 summary(shp_S_1)
@@ -179,8 +190,8 @@ library(extrafont)
 par(mar = c(0, 0, 0, 0))
 plot(shp_S_1, ylim = c(32, 44))
 plot(shp_N_1, add = TRUE)
-p_S <- pointLabel(Lon_S, Lat_S, Names_S, offset = 0, cex = 0.5, family = "HCR Dotum LVT")
-p_N <- pointLabel(Lon_N, Lat_N, Names_N, offset = 0, cex = 0.5, family = "HCR Dotum LVT")
+p_S <- pointLabel(Lon_S, Lat_S, Names_S, offset = 0, cex = 0.5, family = "Malgun Gothic")
+p_N <- pointLabel(Lon_N, Lat_N, Names_N, offset = 0, cex = 0.5, family = "Malgun Gothic")
 ```
 
 <P style = "page-break-before:always">
@@ -199,7 +210,7 @@ shades <- shading(breaks = seq(0, 100, by = 0.1),
 # rates_N_shades <- auto.shading(shp_N_1$rates, cols = rev(brewer.pal(5, "Greens")))
 # choropleth(shp_S_1, shp_S_1$rates, shading = rates_S_shades, ylim = c(32, 44))
 # choropleth(shp_N_1, shp_N_1$rates, shading = rates_N_shades, add = TRUE)
-par(mar = c(0, 0, 3.1, 0), mfrow = c(1, 2), oma = c(0, 0, 2, 0), family = "HCR Dotum LVT")
+par(mar = c(0, 0, 3.1, 0), mfrow = c(1, 2), oma = c(0, 0, 2, 0), family = "Malgun Gothic")
 choropleth(shp_S_1, shp_S_1$rates_b, shading = shades, ylim = c(32, 44))
 choropleth(shp_N_1, shp_N_1$rates_b, shading = shades, add = TRUE)
 text(Lon_S_1, Lat_S_1, labels = labels_S_b, col = "black", cex = 0.8)
@@ -216,7 +227,7 @@ title(main = "세종대왕의 세법개혁 국민투표 지지율", outer = TRUE
 #### 전체
 
 ```{r, fig.width = 12, fig.height = 12}
-par(mar = c(0, 0, 3.1, 0), family = "HCR Dotum LVT")
+par(mar = c(0, 0, 3.1, 0), family = "Malgun Gothic")
 choropleth(shp_S_1, shp_S_1$rates, shading = shades, ylim = c(32, 44))
 choropleth(shp_N_1, shp_N_1$rates, shading = shades, add = TRUE)
 text(Lon_S_1, Lat_S_1, labels = labels_S, col = col_S, cex = 0.8)
@@ -424,7 +435,7 @@ plot(shp_YH, add = TRUE)
 #### Colours
 
 ```{r, fig.width = 12, fig.height = 12}
-par(mar = c(0, 0, 0, 0), mfrow  = c(2, 2), family = "HCR Dotum LVT")
+par(mar = c(0, 0, 0, 0), mfrow  = c(2, 2), family = "Malgun Gothic")
 cols_b <- rates_b * 10
 cols_b
 cols_c <- rates_c * 10
@@ -469,7 +480,7 @@ cols_hex_SL
 #### 서울
 
 ```{r, fig.width = 12, fig.height = 4}
-par(mar = c(0, 0, 3.1, 0), mfrow = c(1, 3), oma = c(0, 0, 2, 0), family = "HCR Dotum LVT")
+par(mar = c(0, 0, 3.1, 0), mfrow = c(1, 3), oma = c(0, 0, 2, 0), family = "Malgun Gothic")
 plot(shp_SL, col = cols_hex_SL[1], main = "대신", cex.main = 2.5)
 text(coordinates(shp_SL), labels = paste0("찬성 : ", rates_SL[1], "%"), cex = 2)
 plot(shp_SL, col = cols_hex_SL[2], main = "3품이하 현직", cex.main = 2.5)
@@ -483,7 +494,7 @@ par(mfrow = c(1, 1))
 #### 관료와 품관 촌민
 
 ```{r, fig.width = 12, fig.height = 12}
-par(mar = c(0, 0, 3.1, 0), mfrow = c(1, 2), family = "HCR Dotum LVT")
+par(mar = c(0, 0, 3.1, 0), mfrow = c(1, 2), family = "Malgun Gothic")
 plot(shp_HG_u, xlim = c(123, 132), ylim = c(32, 44), col = cols_hex_b["HG"])
 plot(shp_PA_u, add = TRUE, col = cols_hex_b["PA"])
 plot(shp_HH_u, add = TRUE, col = cols_hex_b["HH"])
@@ -515,7 +526,7 @@ title(main = "품관 촌민", cex.main = 2.5, line = -4)
 #### 전체
 
 ```{r, fig.width = 12, fig.height = 12}
-par(mar = c(3.1, 0, 3.1, 0), family = "HCR Dotum LVT")
+par(mar = c(3.1, 0, 3.1, 0), family = "Malgun Gothic")
 plot(shp_HG_u, xlim = c(123, 132), ylim = c(32, 44), col = cols_hex["HG"])
 plot(shp_PA_u, add = TRUE, col = cols_hex["PA"])
 plot(shp_HH_u, add = TRUE, col = cols_hex["HH"])
