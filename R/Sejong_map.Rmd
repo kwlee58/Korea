@@ -1,7 +1,8 @@
 ---
 title: "King Sejong National Referendum on the Map"
 author: "coop711"
-date: '2017-10-23'
+# date: '2017-10-23'
+date : "`r Sys.Date()`"
 output: html_document
 ---
 
@@ -157,10 +158,10 @@ labels_S_c <- paste(shp_S_1$Names_kr_old[index_S],
                   paste0(shp_S_1$rates_c[index_S], "%"), sep = ":")
 labels_N_c <- paste(shp_N_1$Names_kr_old[index_N], 
                   paste0(shp_N_1$rates_c[index_N], "%"), sep = ":")
-labels_S <- paste(shp_S_1$Names_kr_old[index_S], 
-                  paste0(shp_S_1$rates[index_S], "%"), sep = ":")
-labels_N <- paste(shp_N_1$Names_kr_old[index_N], 
-                  paste0(shp_N_1$rates[index_N], "%"), sep = ":")
+(labels_S <- paste(shp_S_1$Names_kr_old[index_S], 
+                  paste0(shp_S_1$rates[index_S], "%"), sep = ":"))
+(labels_N <- paste(shp_N_1$Names_kr_old[index_N], 
+                  paste0(shp_N_1$rates[index_N], "%"), sep = ":"))
 ```
 
 #### Colours
@@ -497,6 +498,7 @@ plot(shp_YH, add = TRUE, col = cols_hex_b["YH"])
 text(Lon_S_1, Lat_S_1, labels = labels_S_b, col = "black", cex = 0.8)
 text(Lon_N_1, Lat_N_1, labels = labels_N_b, col = "black", cex = 0.8)
 title(main = "관료", cex.main = 2.5, line = -4)
+# par(mar = c(0, 0, 0, 0), family = "HCR Dotum LVT")
 plot(shp_HG_u, xlim = c(123, 132), ylim = c(32, 44), col = cols_hex_c["HG"])
 plot(shp_PA_u, add = TRUE, col = cols_hex_c["PA"])
 plot(shp_HH_u, add = TRUE, col = cols_hex_c["HH"])
@@ -510,6 +512,8 @@ plot(shp_YH, add = TRUE, col = cols_hex_c["YH"])
 text(Lon_S_1, Lat_S_1, labels = labels_S_c, col = col_S, cex = 0.8)
 text(Lon_N_1, Lat_N_1, labels = labels_N_c, col = col_N, cex = 0.8)
 title(main = "품관 촌민", cex.main = 2.5, line = -4)
+dev.copy(png, file = "../pics/sejong_ref_maps.png", width = 960, height = 960)
+dev.off()
 ```
 
 #### 전체
@@ -529,4 +533,6 @@ plot(shp_YH, add = TRUE, col = cols_hex["YH"])
 text(Lon_S_1, Lat_S_1, labels = labels_S, col = col_S, cex = 0.8)
 text(Lon_N_1, Lat_N_1, labels = labels_N, col = col_N, cex = 0.8)
 title(main = "전체", cex.main = 2.5, line = -4)
+dev.copy(png, file = "../pics/sejong_ref_map.png", width = 640, height = 960)
+dev.off()
 ```

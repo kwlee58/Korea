@@ -1,4 +1,8 @@
-.Rproj.user
+.Rproj.user/**
 .Rhistory
 .RData
+R/*.RData
+R/*.html
+docs/*.pdf
 .Ruserdata
+.Rproj.user

@@ -1,1 +1,210 @@
-]0;~/Google 드라이브/Works/Class/Data_Science/R.WD/Korea[?1034hKee-Wonui-iMac-27:Korea coop2711$ [KKee-Wonui-iMac-27:Korea coop2711$ 
+[KKee-Wonui-iMac-27:Korea coop2711$ git status
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	[31mmodified:   .DS_Store[m
+	[31mmodified:   .Rhistory[m
+	[31mmodified:   .Rproj.user/6DF1EF29/console06/A4B389AD[m
+	[31mmodified:   .Rproj.user/6DF1EF29/console06/INDEX001[m
+	[31mmodified:   .Rproj.user/6DF1EF29/pcs/files-pane.pper[m
+	[31mmodified:   .Rproj.user/6DF1EF29/pcs/windowlayoutstate.pper[m
+	[31mmodified:   .Rproj.user/6DF1EF29/pcs/workbench-pane.pper[m
+	[31mmodified:   .Rproj.user/6DF1EF29/sources/prop/1B69F3CB[m
+	[31mmodified:   .Rproj.user/shared/notebooks/E915B74D-Sejong_map/1/6DF1EF29/chunks.json[m
+	[31mmodified:   .Rproj.user/shared/notebooks/E915B74D-Sejong_map/1/s/chunks.json[m
+	[31mdeleted:    .Rproj.user/shared/notebooks/E915B74D-Sejong_map/1/s/csetup_chunk/000002.csv[m
+	[31mmodified:   R/Map-updated2017.R[m
+	[31mmodified:   R/Sejong_map.Rmd[m
+	[31mmodified:   R/Sejong_map.html[m
+	[31mmodified:   data/KOR_adm/KOR_adm0.cpg[m
+	[31mmodified:   data/KOR_adm/KOR_adm0.csv[m
+	[31mmodified:   data/KOR_adm/KOR_adm0.dbf[m
+	[31mmodified:   data/KOR_adm/KOR_adm0.prj[m
+	[31mmodified:   data/KOR_adm/KOR_adm0.shp[m
+	[31mmodified:   data/KOR_adm/KOR_adm0.shx[m
+	[31mmodified:   data/KOR_adm/KOR_adm1.cpg[m
+	[31mmodified:   data/KOR_adm/KOR_adm1.csv[m
+	[31mmodified:   data/KOR_adm/KOR_adm1.dbf[m
+	[31mmodified:   data/KOR_adm/KOR_adm1.prj[m
+	[31mmodified:   data/KOR_adm/KOR_adm1.shp[m
+	[31mmodified:   data/KOR_adm/KOR_adm1.shx[m
+	[31mmodified:   data/KOR_adm/KOR_adm2.cpg[m
+	[31mmodified:   data/KOR_adm/KOR_adm2.csv[m
+	[31mmodified:   data/KOR_adm/KOR_adm2.dbf[m
+	[31mmodified:   data/KOR_adm/KOR_adm2.prj[m
+	[31mmodified:   data/KOR_adm/KOR_adm2.shp[m
+	[31mmodified:   data/KOR_adm/KOR_adm2.shx[m
+	[31mmodified:   data/KOR_adm/license.txt[m
+	[31mmodified:   data/KOR_adm1/KOR_adm1.dbf[m
+	[31mmodified:   data/KOR_adm1/KOR_adm1.prj[m
+	[31mmodified:   data/KOR_adm1/KOR_adm1.shp[m
+	[31mmodified:   data/KOR_adm1/KOR_adm1.shx[m
+	[31mmodified:   data/PRK_adm1/PRK_adm1.dbf[m
+	[31mmodified:   data/PRK_adm1/PRK_adm1.prj[m
+	[31mmodified:   data/PRK_adm1/PRK_adm1.shp[m
+	[31mmodified:   data/PRK_adm1/PRK_adm1.shx[m
+	[31mmodified:   data/deaths2.csv[m
+	[31mmodified:   data/provinces.csv[m
+	[31mmodified:   docs/King Sejong National Referendum on the Map.pdf[m
+	[31mmodified:   pics/Sejong_ref_map.png[m
+	[31mmodified:   pics/hospitals-cmyk.eps[m
+	[31mmodified:   pics/mmr-cmyk.eps[m
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	[31mR/.DS_Store[m
+	[31mdata/.DS_Store[m
+	[31mdata/GW/.DS_Store[m
+	[31mdata/PRK_adm/.DS_Store[m
+	[31mpics/.DS_Store[m
+	[31mpics/sejong_ref_commons.png[m
+	[31mpics/sejong_ref_maps.png[m
+
+no changes added to commit (use "git add" and/or "git commit -a")
+]0;~/Google 드라이브/Works/Class/Data_Science/R.WD/KoreaKee-Wonui-iMac-27:Korea coop2711$ git [K[K[K[K
+]0;~/Google 드라이브/Works/Class/Data_Science/R.WD/KoreaKee-Wonui-iMac-27:Korea coop2711$ git status
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	[31mmodified:   .DS_Store[m
+	[31mmodified:   .Rhistory[m
+	[31mmodified:   .Rproj.user/6DF1EF29/console06/A4B389AD[m
+	[31mmodified:   .Rproj.user/6DF1EF29/console06/INDEX001[m
+	[31mmodified:   .Rproj.user/6DF1EF29/pcs/files-pane.pper[m
+	[31mmodified:   .Rproj.user/6DF1EF29/pcs/windowlayoutstate.pper[m
+	[31mmodified:   .Rproj.user/6DF1EF29/pcs/workbench-pane.pper[m
+	[31mmodified:   .Rproj.user/6DF1EF29/sources/prop/1B69F3CB[m
+	[31mmodified:   .Rproj.user/shared/notebooks/E915B74D-Sejong_map/1/6DF1EF29/chunks.json[m
+	[31mmodified:   .Rproj.user/shared/notebooks/E915B74D-Sejong_map/1/s/chunks.json[m
+	[31mdeleted:    .Rproj.user/shared/notebooks/E915B74D-Sejong_map/1/s/csetup_chunk/000002.csv[m
+	[31mmodified:   R/Map-updated2017.R[m
+	[31mmodified:   R/Sejong_map.Rmd[m
+	[31mmodified:   R/Sejong_map.html[m
+	[31mmodified:   data/KOR_adm/KOR_adm0.cpg[m
+	[31mmodified:   data/KOR_adm/KOR_adm0.csv[m
+	[31mmodified:   data/KOR_adm/KOR_adm0.dbf[m
+	[31mmodified:   data/KOR_adm/KOR_adm0.prj[m
+	[31mmodified:   data/KOR_adm/KOR_adm0.shp[m
+	[31mmodified:   data/KOR_adm/KOR_adm0.shx[m
+	[31mmodified:   data/KOR_adm/KOR_adm1.cpg[m
+	[31mmodified:   data/KOR_adm/KOR_adm1.csv[m
+	[31mmodified:   data/KOR_adm/KOR_adm1.dbf[m
+	[31mmodified:   data/KOR_adm/KOR_adm1.prj[m
+	[31mmodified:   data/KOR_adm/KOR_adm1.shp[m
+	[31mmodified:   data/KOR_adm/KOR_adm1.shx[m
+	[31mmodified:   data/KOR_adm/KOR_adm2.cpg[m
+	[31mmodified:   data/KOR_adm/KOR_adm2.csv[m
+	[31mmodified:   data/KOR_adm/KOR_adm2.dbf[m
+	[31mmodified:   data/KOR_adm/KOR_adm2.prj[m
+	[31mmodified:   data/KOR_adm/KOR_adm2.shp[m
+	[31mmodified:   data/KOR_adm/KOR_adm2.shx[m
+	[31mmodified:   data/KOR_adm/license.txt[m
+	[31mmodified:   data/KOR_adm1/KOR_adm1.dbf[m
+	[31mmodified:   data/KOR_adm1/KOR_adm1.prj[m
+	[31mmodified:   data/KOR_adm1/KOR_adm1.shp[m
+	[31mmodified:   data/KOR_adm1/KOR_adm1.shx[m
+	[31mmodified:   data/PRK_adm1/PRK_adm1.dbf[m
+	[31mmodified:   data/PRK_adm1/PRK_adm1.prj[m
+	[31mmodified:   data/PRK_adm1/PRK_adm1.shp[m
+	[31mmodified:   data/PRK_adm1/PRK_adm1.shx[m
+	[31mmodified:   data/deaths2.csv[m
+	[31mmodified:   data/provinces.csv[m
+	[31mmodified:   docs/King Sejong National Referendum on the Map.pdf[m
+	[31mmodified:   pics/Sejong_ref_map.png[m
+	[31mmodified:   pics/hospitals-cmyk.eps[m
+	[31mmodified:   pics/mmr-cmyk.eps[m
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	[31mR/.DS_Store[m
+	[31mdata/.DS_Store[m
+	[31mdata/GW/.DS_Store[m
+	[31mdata/PRK_adm/.DS_Store[m
+	[31mpics/.DS_Store[m
+	[31mpics/sejong_ref_commons.png[m
+	[31mpics/sejong_ref_maps.png[m
+
+no changes added to commit (use "git add" and/or "git commit -a")
+]0;~/Google 드라이브/Works/Class/Data_Science/R.WD/KoreaKee-Wonui-iMac-27:Korea coop2711$ git[K[K[Kvi .gitignore 
+[?2004h]0;~/Google 드라이브/Works/Class/Data_Science/R.WD/KoreaKee-Wonui-iMac-27:Korea coop2711$ cp ../Data_Programming[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[KCase_Studies/.gitignore .
+]0;~/Google 드라이브/Works/Class/Data_Science/R.WD/KoreaKee-Wonui-iMac-27:Korea coop2711$ cp ../Case_Studies/.gitignore .[17Pvi .gitignore 
+[?2004h]0;~/Google 드라이브/Works/Class/Data_Science/R.WD/KoreaKee-Wonui-iMac-27:Korea coop2711$ git status
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	[31mmodified:   .DS_Store[m
+	[31mmodified:   .Rhistory[m
+	[31mmodified:   .Rproj.user/6DF1EF29/console06/A4B389AD[m
+	[31mmodified:   .Rproj.user/6DF1EF29/console06/INDEX001[m
+	[31mmodified:   .Rproj.user/6DF1EF29/pcs/files-pane.pper[m
+	[31mmodified:   .Rproj.user/6DF1EF29/pcs/windowlayoutstate.pper[m
+	[31mmodified:   .Rproj.user/6DF1EF29/pcs/workbench-pane.pper[m
+	[31mmodified:   .Rproj.user/6DF1EF29/sources/prop/1B69F3CB[m
+	[31mmodified:   .Rproj.user/shared/notebooks/E915B74D-Sejong_map/1/6DF1EF29/chunks.json[m
+	[31mmodified:   .Rproj.user/shared/notebooks/E915B74D-Sejong_map/1/s/chunks.json[m
+	[31mdeleted:    .Rproj.user/shared/notebooks/E915B74D-Sejong_map/1/s/csetup_chunk/000002.csv[m
+	[31mmodified:   .gitignore[m
+	[31mmodified:   R/Map-updated2017.R[m
+	[31mmodified:   R/Sejong_map.Rmd[m
+	[31mmodified:   R/Sejong_map.html[m
+	[31mmodified:   data/KOR_adm/KOR_adm0.cpg[m
+	[31mmodified:   data/KOR_adm/KOR_adm0.csv[m
+	[31mmodified:   data/KOR_adm/KOR_adm0.dbf[m
+	[31mmodified:   data/KOR_adm/KOR_adm0.prj[m
+	[31mmodified:   data/KOR_adm/KOR_adm0.shp[m
+	[31mmodified:   data/KOR_adm/KOR_adm0.shx[m
+	[31mmodified:   data/KOR_adm/KOR_adm1.cpg[m
+	[31mmodified:   data/KOR_adm/KOR_adm1.csv[m
+	[31mmodified:   data/KOR_adm/KOR_adm1.dbf[m
+	[31mmodified:   data/KOR_adm/KOR_adm1.prj[m
+	[31mmodified:   data/KOR_adm/KOR_adm1.shp[m
+	[31mmodified:   data/KOR_adm/KOR_adm1.shx[m
+	[31mmodified:   data/KOR_adm/KOR_adm2.cpg[m
+	[31mmodified:   data/KOR_adm/KOR_adm2.csv[m
+	[31mmodified:   data/KOR_adm/KOR_adm2.dbf[m
+	[31mmodified:   data/KOR_adm/KOR_adm2.prj[m
+	[31mmodified:   data/KOR_adm/KOR_adm2.shp[m
+	[31mmodified:   data/KOR_adm/KOR_adm2.shx[m
+	[31mmodified:   data/KOR_adm/license.txt[m
+	[31mmodified:   data/KOR_adm1/KOR_adm1.dbf[m
+	[31mmodified:   data/KOR_adm1/KOR_adm1.prj[m
+	[31mmodified:   data/KOR_adm1/KOR_adm1.shp[m
+	[31mmodified:   data/KOR_adm1/KOR_adm1.shx[m
+	[31mmodified:   data/PRK_adm1/PRK_adm1.dbf[m
+	[31mmodified:   data/PRK_adm1/PRK_adm1.prj[m
+	[31mmodified:   data/PRK_adm1/PRK_adm1.shp[m
+	[31mmodified:   data/PRK_adm1/PRK_adm1.shx[m
+	[31mmodified:   data/deaths2.csv[m
+	[31mmodified:   data/provinces.csv[m
+	[31mmodified:   docs/King Sejong National Referendum on the Map.pdf[m
+	[31mmodified:   pics/Sejong_ref_map.png[m
+	[31mmodified:   pics/hospitals-cmyk.eps[m
+	[31mmodified:   pics/mmr-cmyk.eps[m
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	[31mR/.DS_Store[m
+	[31mdata/.DS_Store[m
+	[31mdata/GW/.DS_Store[m
+	[31mdata/PRK_adm/.DS_Store[m
+	[31mpics/.DS_Store[m
+	[31mpics/sejong_ref_commons.png[m
+	[31mpics/sejong_ref_maps.png[m
+
+no changes added to commit (use "git add" and/or "git commit -a")
+]0;~/Google 드라이브/Works/Class/Data_Science/R.WD/KoreaKee-Wonui-iMac-27:Korea coop2711$ git add -A .
