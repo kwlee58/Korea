@@ -27,7 +27,7 @@ library(ggplot2) #> `ggplot()`
 library(rgdal) #> `CRS`, `ogrInfo()`, `ogrListLayers()`, `readOGR()`, `spTransform()`
 library(dplyr) #> `arrange()`, `filter()`, `group_by()`, `left_join()`, `mutate()`,  
 library(broom) #> `tidy()`
-library(extrafont) #> "Malgun Gothic"
+library(extrafont) #> "Malgun Gothic", 적절한 시스템 폰트로 대치, 혹은 # 처리하고 ""로 대체.  
 options(width = 132)
 ```
 
@@ -41,8 +41,8 @@ from [mapshaper](https://mapshaper.org)
 shp_S <- readOGR(dsn = "../data/KOR_adm", 
                 layer = "KOR_adm1",
                 stringsAsFactors = FALSE,
-                encoding = "UTF-8",
-                use_iconv = TRUE)
+                encoding = "UTF-8", #> windows 에서 필요함.
+                use_iconv = TRUE)   #> 함께 필요함.
 shp_N <- readOGR(dsn = "../data/PRK_adm", 
                 layer = "PRK_adm1",
                 stringsAsFactors = FALSE,
@@ -76,7 +76,9 @@ shp_N_1@data <- shp_N@data
 data.frame(shp_S_1)
 data.frame(shp_N_1)
 shp_N_1$NL_NAME_1
-shp_N_1$NL_NAME_1 <- gsub("^\\t", "", shp_N_1$NL_NAME_1)
+shp_N_1$NL_NAME_1 <- gsub("^\\t", "", shp_N_1$NL_NAME_1) #> \t 제거
+shp_N_1$NL_NAME_1
+shp_N_1$NL_NAME_1 <- gsub("\\s+", "_", shp_N_1$NL_NAME_1) #> 빈 칸 제거
 shp_N_1$NL_NAME_1
 class(shp_S_1)
 class(shp_N_1)
