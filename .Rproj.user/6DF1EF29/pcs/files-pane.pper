@@ -1,9 +1,9 @@
 {
-    "path" : "~/Google 드라이브/Works/Class/Data_Science/R.WD/Korea/data",
-    "sortOrder" : [
+    "path": "~/Google 드라이브/Works/Class/Data_Science/R.WD/Korea/R",
+    "sortOrder": [
         {
-            "ascending" : false,
-            "columnIndex" : 2
+            "columnIndex": 2,
+            "ascending": false
         }
     ]
 }
